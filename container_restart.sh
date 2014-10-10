@@ -30,7 +30,7 @@ sh rmi_none_image.sh
 if [ $nouser -eq 1 ] ;then
     sudo docker run -i -t $name /bin/bash
 else
-    docker run -dP --name="$name"  -v /home/${user}/workspace:/root/workspace --privileged=true t10471/${image} /sbin/my_init --enable-insecure-key
+    docker run -dP --name="$name"  -v /home/${user}/workspace:/root/workspace --link mysql:mysql --privileged=true t10471/${image} /sbin/my_init --enable-insecure-key
     sh container_init.sh $name
 fi
 

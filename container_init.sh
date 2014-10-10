@@ -7,7 +7,7 @@ else
     name="$1"
 fi
 
-id=`docker ps |grep $name |awk '{ print $1 }'`
+id=`docker ps |grep $name |grep -v mysql |awk '{ print $1 }'`
 ip=`docker inspect -f "{{ .NetworkSettings.IPAddress }}" $id`
 
 scp  -i insecure_key ~/.ssh/id_rsa_github root@$ip:~/.ssh/id_rsa_github

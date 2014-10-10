@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #使い方
-#bash github_init.sh java7 docker-java
+#bash github_docker_init.shjava7 docker-java
 
 if [ -z "$1" ] ;then
     echo "need docker dir"
