@@ -2,18 +2,18 @@
 
 #コンテナに対してコマンドを送る
 #使い方
-#bash container.sh ghc restart
-
-CONTAINERS=()
-CONTAINERS=("${CONTAINERS[@]}" "ghc")
-CONTAINERS=("${CONTAINERS[@]}" "clang")
-CONTAINERS=("${CONTAINERS[@]}" "scala")
+#bash container.sh restart ghc
 
 COMMANDS=()
 COMMANDS=("${COMMANDS[@]}" "start")
 COMMANDS=("${COMMANDS[@]}" "restart")
 COMMANDS=("${COMMANDS[@]}" "init")
 COMMANDS=("${COMMANDS[@]}" "stop")
+
+CONTAINERS=()
+CONTAINERS=("${CONTAINERS[@]}" "ghc")
+CONTAINERS=("${CONTAINERS[@]}" "clang")
+CONTAINERS=("${CONTAINERS[@]}" "scala")
 
 declare -A ghc
 ghc[start]="ghc haskell haskell"
@@ -33,9 +33,9 @@ scala[restart]="scala scala scala"
 scala[init]="scala"
 scala[stop]="scala"
 
-NAME=`echo $1`
-COMMAND=`echo $2`
-IS_TEST=`echo $3`
+COMMAND=$1
+NAME=$2
+IS_TEST=$3
 
 . ./libs.sh
 
@@ -82,8 +82,8 @@ container_restart() {
 
 trap 'echo "error has occored"; exit 1' 14
 
-is_valid_args "need container name" $NAME
 is_valid_args "need command" $COMMAND
+is_valid_args "need container name" $NAME
 exists_in CONTAINERS $NAME
 exists_in COMMANDS $COMMAND
 

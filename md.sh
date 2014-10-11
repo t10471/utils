@@ -15,4 +15,4 @@ else
     out="$1"
 fi
 
-python  gen_md.py $in $out 
+python  md.py $in $out 
