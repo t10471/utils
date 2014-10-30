@@ -3,21 +3,22 @@
 COMMANDS=()
 COMMANDS=("${COMMANDS[@]}" "ip")
 COMMANDS=("${COMMANDS[@]}" "login")
+COMMANDS=("${COMMANDS[@]}" "rm")
 
 COMMAND=$1
 NAME=$2
-IS_MYSQL=$3
-IS_TEST=$4
+IS_TEST=$3
 IP=""
 . ./libs.sh
 
 ip() {
     local name=$1
-    local is_mysql=$2
     local cmd="docker ps | grep ${name} "
-    if ! $is_mysql ; then
-        cmd="${cmd} |grep -v mysql "
-    fi
+    case $name in
+        mysql)    cmd="${cmd} |grep -v postgres ";;
+        postgres) cmd="${cmd} |grep -v mysql ";;
+        *)        cmd="${cmd} |grep -v mysql |grep -v postgrs";;
+    esac
     cmd="${cmd}|awk ""'"'{ print $1 }'"'"
     echo $cmd
     id=$(eval $cmd)
@@ -31,8 +32,7 @@ ip() {
 
 login() {
     local name=$1
-    local is_mysql=$2
-    ip $name $is_mysql
+    ip $name
     local cmd="ssh -i insecure_key root@$IP"
     echo $cmd
     if [ "$IS_TEST" != "test" ]; then
@@ -40,12 +40,16 @@ login() {
     fi
 }
 
+rm() {
+    local name=$1
+    ip $name
+    ssh-keygen -f "/home/theo/.ssh/known_hosts" -R $IP 
+}
 
 trap 'echo "error has occored"; exit 1' 14
 
 is_valid_args "need command" $COMMAND
 is_valid_args "need container name" $NAME
-is_valid_args "need IS_MySQL" $IS_MYSQL
 exists_in COMMANDS $COMMAND
 
-${COMMAND} $NAME $IS_MYSQL
+${COMMAND} $NAME
