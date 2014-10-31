@@ -1,13 +1,6 @@
 #!/bin/bash
 
-# confファイルを読み見込み以下のようにdocker runをおこなう
-# docker run --name mysql -v /var/lib/mysql:/var/lib/mysql --privileged=true \
-#     -e MYSQL_ROOT_PASSWORD=pppp \
-#     -e MYSQL_PASSWORD=qqqqq \
-#     -e MYSQL_DATABASE=dddd \
-#     -e MYSQL_USER=uuuuu \
-#     -d mysql
-
+# bash db.sh [start|onnect|login] [mysql|postgres] [test]
 
 COMMANDS=()
 COMMANDS=("${COMMANDS[@]}" "start")

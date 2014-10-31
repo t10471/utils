@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+# bash login.sh [login|ip|rm] container名 [test]
 
 COMMANDS=()
 COMMANDS=("${COMMANDS[@]}" "ip")

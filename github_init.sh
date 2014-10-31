@@ -2,7 +2,7 @@
 
 # github上に言語のプロジェクトかdockerプロジェクトを作成するときに使用
 # 使い方
-# bash github_init.sh [host|docker] dir user
+# bash github_init.sh [host|docker] dir url 
 # bash github_init.sh docker ghc ghc
 # bash github_init.sh host haskell haskell
 
@@ -17,7 +17,7 @@ URL=$3
 IS_TEST=$4
 
 declare -A cd_dir
-cd_dir[host]="/home/${TARGET_DIR}/workspace"
+cd_dir[host]="/home/theo/workspace/${TARGET_DIR}"
 cd_dir[docker]="~/docker/${TARGET_DIR}"
 
 declare -A github_url
