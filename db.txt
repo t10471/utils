@@ -1,0 +1,25 @@
+create database hoge encoding 'UTF8';
+
+CREATE TABLE `test` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `age` tinyint(3) unsigned DEFAULT NULL,
+  KEY `id` (`id`)
+);
+
+create table test (
+  id serial PRIMARY KEY,
+  name varchar(255) DEFAULT NULL,
+  age smallint DEFAULT NULL
+);
+
+INSERT INTO test (name, age) VALUES('a', 14);
+
+PostgreSQLコマンド
+\l  データベースの一覧を表示します。psql -lと同じ結果が出力されます。
+\d  テーブル、ビュー、シーケンスの一覧を表示します。
+\du データベースユーザの一覧を表示します。
+\dt テーブルの一覧を表示します。
+\c(\connect) データベース名 既存の接続を切断し、指定したデータベースに新規接続します。
+
+

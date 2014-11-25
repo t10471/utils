@@ -1,13 +1,13 @@
-
 # -*- coding: utf-8 -*-
 
-#python  gen_md.py /home/clang/workspace/HeadFistC/pointer/memo.md /var/www/html/memo.html
+#  python  md.py /home/clang/workspace/HeadFistC/pointer/memo.md /var/www/html/memo.html
 
 import markdown
 import sys
 import os
 import textwrap
 import codecs
+
 
 def main():
     in_file = sys.argv[1]
@@ -24,7 +24,6 @@ def main():
     if not os.path.exists(out_file):
         with codecs.open(out_file, 'w', encoding="utf-8") as f:
             f.write("")
-        
     html = textwrap.dedent('''\
 <!DOCTYPE html>
 <html>
@@ -40,15 +39,19 @@ def main():
     # f.close()
     # html += tmp
     with codecs.open(in_file, 'r', encoding="utf-8") as f:
-        tmp =  markdown.markdown(f.read(), output_format="html5", extensions=['markdown.extensions.fenced_code', 'markdown.extensions.codehilite', 'gfm'])
-        #tmp =  markdown.markdown(f.read(), output_format="html5", extensions=['gfm'])
-        html+= tmp
+        tmp = markdown.markdown(f.read(), output_format="html5",
+                                extensions=['markdown.extensions.fenced_code',
+                                            'markdown.extensions.codehilite',
+                                            'gfm'])
+        #  tmp =  markdown.markdown(f.read(), output_format="html5",
+        #                           extensions= ['gfm'])
+        html += tmp
     html += textwrap.dedent('''\
 </body>
 </html>
 ''')
     with codecs.open(out_file, 'w', encoding="utf-8") as f:
-         f.write(html)
+        f.write(html)
 
 
 if '__main__' == __name__:

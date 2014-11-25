@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-#python  gen_md.py /home/clang/workspace/HeadFistC/pointer/memo.md /var/www/html/memo.html
+# bash md.sh /home/clang/workspace/HeadFistC/pointer/memo.md /var/www/html/memo.html
 
 if [ -z "$1" ] ;then
     echo'need input file'
