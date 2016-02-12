@@ -19,6 +19,7 @@ ip() {
     case $name in
         mysql)    cmd="${cmd} |grep -v postgres ";;
         postgres) cmd="${cmd} |grep -v mysql ";;
+        ghc)      cmd="${cmd} |grep -v mysql |grep -v postgrs";;
         *)        cmd="${cmd} |grep -v mysql |grep -v postgrs";;
     esac
     cmd="${cmd}|awk ""'"'{ print $1 }'"'"
