@@ -15,6 +15,8 @@ CONTAINERS=("${CONTAINERS[@]}" "ghc")
 CONTAINERS=("${CONTAINERS[@]}" "clang")
 CONTAINERS=("${CONTAINERS[@]}" "scala")
 CONTAINERS=("${CONTAINERS[@]}" "ruby")
+CONTAINERS=("${CONTAINERS[@]}" "stack")
+CONTAINERS=("${CONTAINERS[@]}" "python")
 
 # container名 docker名 ユーザ名
 declare -A ghc
@@ -41,14 +43,40 @@ ruby[restart]="ruby ruby ruby"
 ruby[init]="ruby"
 ruby[stop]="ruby"
 
+declare -A stack
+stack[start]="stack stack stack"
+stack[restart]="stack stack stack"
+stack[init]="stack"
+stack[stop]="stack"
+
+declare -A python
+python[start]="python python python"
+python[restart]="python python python"
+python[init]="python"
+python[stop]="python"
 
 declare -A mysql
 mysql[ghc]="y"
 mysql[clang]="y"
 mysql[scala]="y"
+mysql[stack]="y"
+mysql[python]="y"
 
 declare -A postgres
+postgres[ghc]="y"
 postgres[ruby]="y"
+postgres[stack]="y"
+
+declare -A rabbit
+rabbit[scala]="y"
+
+declare -A port
+port[ghc]="9001:9001"
+port[stack]="9002:9002"
+port[python]="9003:9003"
+
+# declare -A env
+# env[ghc]="LANG=C.UTF-8"
 
 COMMAND=$1
 NAME=$2
@@ -60,7 +88,7 @@ container_init() {
     local name=$1
     echo "container_init $name"
     if [ "$IS_TEST" != "test" ]; then
-        local id=`docker ps |grep $name |grep -v mysql |awk '{ print $1 }'`
+        local id=`docker ps |grep $name |grep -v ghct |grep -v mysql |awk '{ print $1 }'`
         local ip=`docker inspect -f "{{ .NetworkSettings.IPAddress }}" $id`
         scp  -i insecure_key ~/.ssh/id_rsa_github root@$ip:~/.ssh/id_rsa_github
         ssh -i insecure_key root@$ip "bash base.sh"
@@ -88,6 +116,15 @@ container_start() {
     fi
     if [[ "${postgres[$name]+_}" == "_"  ]]; then
         cmd="${cmd} --link postgres:postgres" 
+    fi
+    if [[ "${rabbit[$name]+_}" == "_"  ]]; then
+        cmd="${cmd} --link rabbit:rabbit" 
+    fi
+    if [[ "${port[$name]+_}" == "_"  ]]; then
+        cmd="${cmd} -p ${port[$name]}" 
+    fi
+    if [[ "${env[$name]+_}" == "_"  ]]; then
+        cmd="${cmd} -e ${env[$name]}" 
     fi
     cmd="${cmd} --privileged=true t10471/${image} /sbin/my_init --enable-insecure-key"
     echo $cmd 
